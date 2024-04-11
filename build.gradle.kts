@@ -19,15 +19,13 @@ repositories {
 val kotestVersion = "5.8.1"
 val jdomVersion = "2.0.6.1"
 val jetbrainsAnnotationVersion = "24.1.0"
-val jaxenVersion = "1.2.0"
-val slf4jSimpleVersion = "2.0.3"
-val kotlinLoggingVersion = "5.1.0"
+val slf4jSimpleVersion = "2.0.12"
+val kotlinLoggingVersion = "6.0.4"
 
 dependencies {
     compileOnly("org.jetbrains:annotations:$jetbrainsAnnotationVersion")
     implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
     implementation("org.jdom:jdom2:$jdomVersion")
-    runtimeOnly("jaxen:jaxen:$jaxenVersion")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation(kotlin("test"))
     testRuntimeOnly("org.slf4j:slf4j-simple:$slf4jSimpleVersion")
