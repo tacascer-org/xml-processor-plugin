@@ -29,9 +29,6 @@ dependencies {
     compileOnly("org.jetbrains:annotations:$jetbrainsAnnotationVersion")
     implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
     implementation("io.github.tacascer:xml-processor:$xmlProcessorVersion")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
-    testImplementation(kotlin("test"))
-    testRuntimeOnly("org.slf4j:slf4j-simple:$slf4jSimpleVersion")
 }
 
 kotlin {
@@ -43,19 +40,25 @@ kotlin {
 
 testing {
     suites {
-        val test by getting(JvmTestSuite::class) {
+        withType<JvmTestSuite> {
             useJUnitJupiter()
+            dependencies {
+                implementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
+                runtimeOnly("org.slf4j:slf4j-simple:$slf4jSimpleVersion")
+            }
         }
 
-        register<JvmTestSuite>("functionalTest") {
+        val functionalTest by registering(JvmTestSuite::class) {
             dependencies {
                 implementation(project())
+                implementation(gradleApi())
+                implementation(gradleTestKit())
             }
 
             targets {
                 all {
                     testTask.configure {
-                        shouldRunAfter(test)
+                        shouldRunAfter(tasks.test)
                     }
                 }
             }
@@ -63,18 +66,23 @@ testing {
     }
 }
 
+tasks.check {
+    dependsOn(testing.suites.named("functionalTest"))
+}
+
 gradlePlugin {
     website = "https://github.com/tacascer-org/xml-processor-plugin"
     vcsUrl = "https://github.com/tacascer-org/xml-processor-plugin"
     plugins {
         create("xml-processor") {
-            id = "io.github.tacascer.xml-processor"
-            displayName = "Xml Processor"
             description = "A plugin to flatten XML files."
+            displayName = "Xml Processor"
+            id = "io.github.tacascer.xml-processor"
+            implementationClass = "io.github.tacascer.XmlProcessorPlugin"
             tags = listOf("xml", "flatten", "processor")
-            implementationClass = "io.github.tacascer.XmlProcessor"
         }
     }
+    testSourceSets(sourceSets.getByName("test"), sourceSets.getByName("functionalTest"))
 }
 
 signing {
