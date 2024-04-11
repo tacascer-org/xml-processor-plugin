@@ -3,7 +3,6 @@ package io.github.tacascer.flatten
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.shouldBe
-import io.kotest.mpp.file
 import org.gradle.testfixtures.ProjectBuilder
 import org.intellij.lang.annotations.Language
 import kotlin.io.path.createFile
