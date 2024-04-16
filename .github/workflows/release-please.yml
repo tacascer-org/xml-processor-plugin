@@ -1,6 +1,6 @@
 on:
   workflow_run:
-    workflows: [ "Build And Analyze" ]
+    workflows: [ "Build" ]
     types:
       - completed
     branches:
