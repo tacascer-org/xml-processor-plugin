@@ -2,7 +2,7 @@
 
 [![Gradle Plugin Portal Version](https://img.shields.io/gradle-plugin-portal/v/io.github.tacascer.xml-processor)](https://plugins.gradle.org/plugin/io.github.tacascer.xml-processor)
 
-This plugins packages the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor) as a Gradle plugin.
+This plugin packages the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor) as a Gradle plugin.
 
 ## Usage
 
