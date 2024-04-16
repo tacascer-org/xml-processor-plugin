@@ -2,6 +2,10 @@
 
 [![Gradle Plugin Portal Version](https://img.shields.io/gradle-plugin-portal/v/io.github.tacascer.xml-processor)](https://plugins.gradle.org/plugin/io.github.tacascer.xml-processor)
 
+![Build](https://github.com/tacascer-org/xml-processor/actions/workflows/build.yml/badge.svg?branch=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tacascer-org_xml-processor-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=tacascer-org_xml-processor-plugin)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tacascer-org_xml-processor-plugin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=tacascer-org_xml-processor-plugin)
+
 This plugin packages the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor) as a Gradle plugin.
 
 ## Usage
