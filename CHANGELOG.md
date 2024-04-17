@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/tacascer-org/xml-processor-plugin/compare/v0.2.0...v0.2.1) (2024-04-17)
+
+
+### Bug Fixes
+
+* fix publishing workflow ([#22](https://github.com/tacascer-org/xml-processor-plugin/issues/22)) ([177a597](https://github.com/tacascer-org/xml-processor-plugin/commit/177a597e977c021c1699f7f35a4fc630c718cda2))
+
 ## [0.2.0](https://github.com/tacascer-org/xml-processor-plugin/compare/v0.1.0...v0.2.0) (2024-04-17)
 
 
