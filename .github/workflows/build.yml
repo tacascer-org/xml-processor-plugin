@@ -11,11 +11,6 @@ on:
   push:
 
 jobs:
-  submit-dependencies:
-    uses: tacascer-org/actions-workflows/.github/workflows/submit_dependencies.yml@v0.2.0
-    permissions:
-      contents: write
-
   gradle:
     uses: tacascer-org/actions-workflows/.github/workflows/gradle_build.yml@v0.2.0
     with:
