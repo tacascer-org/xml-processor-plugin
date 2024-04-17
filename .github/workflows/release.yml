@@ -33,7 +33,7 @@ jobs:
         run: |
           curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
           chmod +x $RUNNER_TEMP/sbom-tool
-          $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn xml-processor-plugin -pv ${{github.ref_name}} -ps tacascer -nsb io.github.tacascer -V Verbose
+          $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn xml-processor-plugin -pv ${{github.ref_name}} -ps ${{github.repository_owner}} -nsb https://github.com/tacascer-org -V Verbose
       - uses: actions/upload-artifact@v4
         with:
           name: sbom
