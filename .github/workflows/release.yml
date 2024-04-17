@@ -5,7 +5,7 @@ on:
       - created
   workflow_dispatch:
 jobs:
-  publish:
+  Publish to Plugin Portal:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,3 +22,24 @@ jobs:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.MAVEN_CENTRAL_GPG_KEY}}
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.MAVEN_CENTRAL_GPG_PASSWORD}}
         run: ./gradlew publishPlugins --no-configuration-cache
+  Upload SBOM:
+    needs: Submit Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate SBOM
+        run: |
+          curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+          chmod +x $RUNNER_TEMP/sbom-tool
+          $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn xml-processor-plugin -pv ${{github.ref_name}} -ps tacascer -nsb io.github.tacascer -V Verbose
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: _manifest/spdx_2.2
+      - name: SBOM upload
+        uses: advanced-security/spdx-dependency-submission-action@v0.0.1
+        with:
+          filePath: "_manifest/spdx_2.2/"
