@@ -23,7 +23,7 @@ val kotestVersion = "5.8.1"
 val jetbrainsAnnotationVersion = "24.1.0"
 val slf4jSimpleVersion = "2.0.13"
 val kotlinLoggingVersion = "6.0.9"
-val xmlProcessorVersion = "0.2.1"
+val xmlProcessorVersion = "0.4.0"
 
 dependencies {
     compileOnly("org.jetbrains:annotations:$jetbrainsAnnotationVersion")
@@ -41,11 +41,14 @@ kotlin {
 testing {
     suites {
         withType<JvmTestSuite> {
-            useJUnitJupiter()
             dependencies {
                 implementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
                 runtimeOnly("org.slf4j:slf4j-simple:$slf4jSimpleVersion")
             }
+        }
+
+        val test by getting(JvmTestSuite::class) {
+            useJUnitJupiter()
         }
 
         val functionalTest by registering(JvmTestSuite::class) {
@@ -58,7 +61,7 @@ testing {
             targets {
                 all {
                     testTask.configure {
-                        shouldRunAfter(tasks.test)
+                        shouldRunAfter(test)
                     }
                 }
             }

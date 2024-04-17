@@ -1,12 +1,13 @@
 # XML Processor Plugin
 
-[![Gradle Plugin Portal Version](https://img.shields.io/gradle-plugin-portal/v/io.github.tacascer.xml-processor)](https://plugins.gradle.org/plugin/io.github.tacascer.xml-processor)
+[![Gradle Plugin Portal Version](https://img.shields.io/gradle-plugin-portal/v/io.github.tacascer.xml-processor?style=for-the-badge&logo=gradle)](https://plugins.gradle.org/plugin/io.github.tacascer.xml-processor)
 
 ![Build](https://github.com/tacascer-org/xml-processor/actions/workflows/build.yml/badge.svg?branch=main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tacascer-org_xml-processor-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=tacascer-org_xml-processor-plugin)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tacascer-org_xml-processor-plugin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=tacascer-org_xml-processor-plugin)
 
-This plugin packages the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor) as a Gradle plugin.
+This plugin packages the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor)
+as a Gradle plugin.
 
 ## Usage
 
@@ -77,6 +78,43 @@ single schema. Here's how you can do it:
 
 4. The `output.xsd` file will now contain a flattened version of your XML schema.
 
-## Contributing
+## Stripping Namespaces
 
-If you want to contribute to the XML Processor Plugin, please create an issue or open a pull request.
+The `stripNamespaces` input is an optional configuration for the `xmlProcessor` extension.
+
+When set to `true`, the plugin removes all namespaces from the XML schema during the flattening
+process. By default, this value is `false`.
+
+```kotlin
+xmlProcessor {
+    flatten {
+        inputFile.set(file("path/to/your/input.xml"))
+        outputFile.set(file("path/to/your/output.xml"))
+        stripNamespaces.set(true)
+    }
+}
+```
+
+In this example, the `xmlFlatten` task will flatten your XML schema and remove all namespaces.
+
+### Example
+
+Consider the following XML schema:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
+    <xs:include schemaLocation="sample_1.xsd"/>
+    <xs:element name="sample" type="xs:string"/>
+</xs:schema>
+```
+
+If you run the `xmlFlatten` task with `stripNamespaces` set to `true`, the output will be:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <include schemaLocation="sample_1.xsd"/>
+    <element name="sample" type="string"/>
+</schema>
+```
