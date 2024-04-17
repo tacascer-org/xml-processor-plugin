@@ -4,7 +4,7 @@ on:
 
 
 jobs:
-  submit_dependencies:
+  submit-dependencies:
     uses: tacascer-org/actions-workflows/.github/workflows/submit_dependencies.yml@v0.2.1
     permissions:
       contents: write

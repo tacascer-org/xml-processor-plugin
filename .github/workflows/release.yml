@@ -22,8 +22,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.MAVEN_CENTRAL_GPG_KEY}}
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.MAVEN_CENTRAL_GPG_PASSWORD}}
         run: ./gradlew publishPlugins --no-configuration-cache
-  upload_sbom:
-    needs: Submit Dependencies
+  upload-sbom:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
