@@ -43,7 +43,6 @@ class XmlFlattenTaskTest : FunSpec({
             it.apply {
                 inputFile.set(includingFile.toFile())
                 outputFile.set(testOutputFile.toFile())
-                stripNamespaces.set(false)
             }
         }
 

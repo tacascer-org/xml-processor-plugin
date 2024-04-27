@@ -14,7 +14,6 @@ class XmlProcessorPlugin : Plugin<Project> {
                 description = "Flatten XML file"
                 inputFile.set(extension.flatten.inputFile)
                 outputFile.set(extension.flatten.outputFile)
-                stripNamespaces.set(extension.flatten.stripNamespaces)
             }
         }
     }
