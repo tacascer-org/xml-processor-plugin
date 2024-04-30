@@ -16,11 +16,11 @@ class XmlProcessorPluginTest : FunSpec({
         val buildFile = testDir.toPath().resolve("build.gradle.kts").createFile()
         val includingFile = testDir.toPath().resolve("sample.xsd").createFile()
         val includedFile = testDir.toPath().resolve("sample_1.xsd").createFile()
-        val testOutputFile = testDir.toPath().resolve("output.xsd").createFile()
+        val testOutputFile = testDir.toPath().resolve("sample_flatten.xsd")
         @Language("XML") val includingFileText = """
             <?xml version="1.0" encoding="UTF-8"?>
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
-                <xs:include schemaLocation="${testDir.toPath().resolve("sample_1.xsd").toUri()}"/>
+                <xs:include schemaLocation="${includedFile.toUri()}"/>
                 <xs:element name="sample" type="xs:string"/>
             </xs:schema>
             """.trimIndent()
@@ -39,6 +39,7 @@ class XmlProcessorPluginTest : FunSpec({
             <xs:element name="sampleOne" type="xs:string" />
         </xs:schema>
         """.trimIndent()
+
         @Language("kotlin")
         val buildFileText = """
             plugins {
@@ -46,15 +47,15 @@ class XmlProcessorPluginTest : FunSpec({
             }
             
             xmlProcessor {
-                flatten {
-                    inputFile.set(file("${includingFile.toUri()}"))
-                    outputFile.set(file("${testOutputFile.toUri()}"))
-                }
+                input.add(layout.buildDirectory.file("${includingFile.toUri()}"))
+                output.set(layout.buildDirectory.dir(("${testDir.toURI()}")))
+                flatten = true
             } 
         """.trimIndent()
         buildFile.writeText(buildFileText)
 
-        val result = GradleRunner.create().withProjectDir(testDir).withArguments("xmlFlatten").withPluginClasspath().build()
+        val result =
+            GradleRunner.create().withProjectDir(testDir).withArguments("xmlFlatten").withPluginClasspath().build()
 
         result.task(":xmlFlatten")?.outcome shouldBe TaskOutcome.SUCCESS
         testOutputFile.readText().trimIndent() shouldBe expectedText
