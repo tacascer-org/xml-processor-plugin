@@ -20,23 +20,11 @@ plugins {
 }
 
 xmlProcessor {
-    flatten {
-        inputFile.set(file("path/to/your/input.xml"))
-        outputFile.set(file("path/to/your/output.xml"))
-    }
+    // configuration here
 }
 ```
 
-Then, you can run the `xmlFlatten` task to flatten your XML schema:
-
-```bash
-./gradlew xmlFlatten
-```
-
-### Example
-
-Consider the following scenario: you have an XML schema that includes another schema, and you want to flatten it into a
-single schema. Here's how you can do it:
+### Example 1: Flatten XML Schema
 
 1. Create your input XML files:
 
@@ -63,10 +51,9 @@ single schema. Here's how you can do it:
 
     ```kotlin
     xmlProcessor {
-        flatten {
-            inputFile.set(file("sample.xsd"))
-            outputFile.set(file("output.xsd"))
-        }
+        input.add(file("path/to/your/sample.xsd"))
+        output.set(layout.projectDirectory.dir("build/output"))
+        flatten = true     
     }
     ```
 
@@ -76,45 +63,12 @@ single schema. Here's how you can do it:
     ./gradlew xmlFlatten
     ```
 
-4. The `output.xsd` file will now contain a flattened version of your XML schema.
+4. The `build/output/sample_flatten.xsd` file will now contain a flattened version of your XML schema
 
-## Stripping Namespaces
-
-The `stripNamespaces` input is an optional configuration for the `xmlProcessor` extension.
-
-When set to `true`, the plugin removes all namespaces from the XML schema during the flattening
-process. By default, this value is `false`.
-
-```kotlin
-xmlProcessor {
-    flatten {
-        inputFile.set(file("path/to/your/input.xml"))
-        outputFile.set(file("path/to/your/output.xml"))
-        stripNamespaces.set(true)
-    }
-}
-```
-
-In this example, the `xmlFlatten` task will flatten your XML schema and remove all namespaces.
-
-### Example
-
-Consider the following XML schema:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
-    <xs:include schemaLocation="sample_1.xsd"/>
-    <xs:element name="sample" type="xs:string"/>
-</xs:schema>
-```
-
-If you run the `xmlFlatten` task with `stripNamespaces` set to `true`, the output will be:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<schema>
-    <include schemaLocation="sample_1.xsd"/>
-    <element name="sample" type="string"/>
-</schema>
-```
+      ```xml
+     <?xml version="1.0" encoding="UTF-8"?>
+     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
+         <xs:element name="sample" type="xs:string" />
+         <xs:element name="sampleOne" type="xs:string" />
+     </xs:schema>
+      ```
