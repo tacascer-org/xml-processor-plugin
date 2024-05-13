@@ -1,21 +1,23 @@
-package io.github.tacascer.flatten
+package io.github.tacascer
 
+import io.github.tacascer.flatten.IncludeFlattener
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.paths.shouldContainFile
-import io.kotest.matchers.shouldBe
 import org.gradle.testfixtures.ProjectBuilder
 import org.intellij.lang.annotations.Language
 import kotlin.io.path.createFile
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
-class XmlFlattenTaskTest : FunSpec({
-    test("XmlFlattenTask should flatten XML file with include directive") {
+private const val INPUT_FILE = "sample.xsd"
+
+class XmlProcessTaskTest : FunSpec({
+    test("task can flatten file") {
         val testDir = tempdir().toPath()
-        val includingFile = testDir.resolve("sample.xsd").createFile()
+        val includingFile = testDir.resolve(INPUT_FILE).createFile()
         val includedFile = testDir.resolve("sample_1.xsd").createFile()
-        val testOutputFile = testDir.resolve("sample_flatten.xsd")
+        val testOutputDir = tempdir().resolve("output").toPath()
         @Language("XML") val includingFileText = """
             <?xml version="1.0" encoding="UTF-8"?>
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
@@ -38,18 +40,20 @@ class XmlFlattenTaskTest : FunSpec({
             <xs:element name="sample" type="xs:string" />
             <xs:element name="sampleOne" type="xs:string" />
         </xs:schema>
+        
         """.trimIndent()
         val project = ProjectBuilder.builder().build()
-        val xmlFlatten = project.tasks.register("xmlFlatten", XMLFlattenTask::class.java) {
+        val xmlProcess = project.tasks.register("xmlProcess", XmlProcessTask::class.java) {
             it.apply {
                 inputFiles.add(project.layout.projectDirectory.file(includingFile.toUri().toString()))
-                outputDir.set(testDir.toFile())
+                outputDir.set(project.layout.projectDirectory.dir(testOutputDir.toUri().toString()))
+                filters.add(IncludeFlattener())
             }
         }
 
-        xmlFlatten.get().flatten()
+        xmlProcess.get().process()
 
-        testDir shouldContainFile "sample_flatten.xsd"
-        testOutputFile.readText().trimIndent() shouldBe expectedText
+        testOutputDir shouldContainFile INPUT_FILE
+        testOutputDir.resolve(INPUT_FILE).readText() shouldBeSamePrettyPrintedAs expectedText
     }
 })
