@@ -11,35 +11,25 @@ import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 class XmlProcessorPluginTest : FunSpec({
-    test("given a flatten configuration in extension, when apply plugin, then file should be flattened") {
+    test("given an empty list of filters, when the plugin is applied, it should do nothing") {
         val testDir = tempdir()
         val buildFile = testDir.toPath().resolve("build.gradle.kts").createFile()
-        val includingFile = testDir.toPath().resolve("sample.xsd").createFile()
-        val includedFile = testDir.toPath().resolve("sample_1.xsd").createFile()
-        val testOutputFile = testDir.toPath().resolve("sample_flatten.xsd")
-        @Language("XML") val includingFileText = """
+        val inputFile = testDir.toPath().resolve("sample.xsd").createFile()
+        val testOutputFile = testDir.toPath().resolve("output/sample.xsd")
+        @Language("XML") val inputFileText = """
             <?xml version="1.0" encoding="UTF-8"?>
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
-                <xs:include schemaLocation="${includedFile.toUri()}"/>
                 <xs:element name="sample" type="xs:string"/>
             </xs:schema>
             """.trimIndent()
-        includingFile.writeText(includingFileText)
-        @Language("XML") val includedFileText = """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-                <xs:element name="sampleOne" type="xs:string"/>
-            </xs:schema>
-            """.trimIndent()
-        includedFile.writeText(includedFileText)
-        @Language("XML") val expectedText = """
+        inputFile.writeText(inputFileText)
+        @Language("XMl")
+        val expectedText = """
         <?xml version="1.0" encoding="UTF-8"?>
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
             <xs:element name="sample" type="xs:string" />
-            <xs:element name="sampleOne" type="xs:string" />
         </xs:schema>
         """.trimIndent()
-
         @Language("kotlin")
         val buildFileText = """
             plugins {
@@ -47,17 +37,22 @@ class XmlProcessorPluginTest : FunSpec({
             }
             
             xmlProcessor {
-                input.add(layout.buildDirectory.file("${includingFile.toUri()}"))
-                output.set(layout.buildDirectory.dir(("${testDir.toURI()}")))
-                flatten = true
+                processingSets {
+                    register("include") {
+                        inputFiles.add(layout.buildDirectory.file("${inputFile.toUri()}"))
+                        outputDir.set(layout.buildDirectory.dir(("${testDir.resolve("output").toURI()}")))
+                    }
+                }
             } 
         """.trimIndent()
         buildFile.writeText(buildFileText)
 
         val result =
-            GradleRunner.create().withProjectDir(testDir).withArguments("xmlFlatten").withPluginClasspath().build()
+            GradleRunner.create().withProjectDir(testDir).withArguments("processXmlSetInclude").withPluginClasspath()
+                .withDebug(true).forwardOutput()
+                .build()
 
-        result.task(":xmlFlatten")?.outcome shouldBe TaskOutcome.SUCCESS
+        result.task(":processXmlSetInclude")?.outcome shouldBe TaskOutcome.SUCCESS
         testOutputFile.readText().trimIndent() shouldBe expectedText
     }
 })

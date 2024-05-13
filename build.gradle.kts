@@ -26,9 +26,9 @@ val kotlinLoggingVersion = "6.0.9"
 val xmlProcessorVersion = "0.7.3"
 
 dependencies {
+    api("io.github.tacascer:xml-processor:$xmlProcessorVersion")
     compileOnly("org.jetbrains:annotations:$jetbrainsAnnotationVersion")
     implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
-    implementation("io.github.tacascer:xml-processor:$xmlProcessorVersion")
 }
 
 kotlin {

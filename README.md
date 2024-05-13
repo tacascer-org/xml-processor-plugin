@@ -51,19 +51,25 @@ xmlProcessor {
 
     ```kotlin
     xmlProcessor {
-        input.add(file("path/to/your/sample.xsd"))
-        output.set(layout.projectDirectory.dir("build/output"))
-        flatten = true     
+        processingSets {
+            register("flatten") {
+                input.add(file("path/to/your/sample.xsd"))
+                output.set(layout.buildDirectory.dir("output"))
+                filters.add(io.github.tacascer.flatten.IncludeFlattener())
+            }
+        }
     }
     ```
 
-3. Run the `xmlFlatten` task:
+   This will create a task named `processXmlSetFlatten`.
+
+3. Run the task:
 
     ```bash
-    ./gradlew xmlFlatten
+    ./gradlew processXmlSetFlatten
     ```
 
-4. The `build/output/sample_flatten.xsd` file will now contain a flattened version of your XML schema
+4. The `build/output/sample.xsd` file will now contain a flattened version of your XML schema
 
       ```xml
      <?xml version="1.0" encoding="UTF-8"?>
@@ -72,3 +78,28 @@ xmlProcessor {
          <xs:element name="sampleOne" type="xs:string" />
      </xs:schema>
       ```
+
+## Example 2: Defining multiple processing sets
+
+You can define multiple processing sets, like so:
+
+`build.gradle.kts`:
+
+```kotlin
+xmlProcessor {
+    processingSets {
+        register("flatten") {
+            input.add(file("path/to/your/sample.xsd"))
+            output.set(layout.buildDirectory.dir("output"))
+            filters.add(io.github.tacascer.flatten.IncludeFlattener())
+        }
+        register("strip") {
+            input.add(file("path/to/your/sample.xsd"))
+            output.set(layout.buildDirectory.dir("output"))
+            filters.add(io.github.tacascer.namespace.NamespaceRemover())
+        }
+    }
+}
+```
+
+This will create 2 tasks: `processXmlSetFlatten` and `processXmlSetStrip`.
