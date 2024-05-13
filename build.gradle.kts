@@ -19,7 +19,7 @@ repositories {
     mavenCentral()
 }
 
-val kotestVersion = "5.8.1"
+val kotestVersion = "5.9.0"
 val jetbrainsAnnotationVersion = "24.1.0"
 val slf4jSimpleVersion = "2.0.13"
 val kotlinLoggingVersion = "6.0.9"
