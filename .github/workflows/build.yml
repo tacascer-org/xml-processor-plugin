@@ -12,7 +12,7 @@ on:
 
 jobs:
   gradle:
-    uses: tacascer-org/actions-workflows/.github/workflows/gradle_build.yml@v0.2.3
+    uses: tacascer-org/actions-workflows/.github/workflows/gradle_build.yml@v0.4.4
     with:
       java-version: 17
     secrets: inherit
