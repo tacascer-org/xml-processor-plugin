@@ -16,3 +16,6 @@ jobs:
     with:
       java-version: 17
     secrets: inherit
+    permissions:
+      security-events: write
+      contents: write
