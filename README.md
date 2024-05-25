@@ -6,12 +6,14 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tacascer-org_xml-processor-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=tacascer-org_xml-processor-plugin)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tacascer-org_xml-processor-plugin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=tacascer-org_xml-processor-plugin)
 
-This plugin packages the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor)
+This plugin packages
+the [XML Processor](https://github.com/tacascer-org/xml-processor?tab=readme-ov-file#xml-processor)
 as a Gradle plugin.
 
 ## Usage
 
-To use the XML Processor Plugin, you need to apply it in your `build.gradle.kts` file and configure the `xmlProcessor`
+To use the XML Processor Plugin, you need to apply it in your `build.gradle.kts`
+file and configure the `xmlProcessor`
 extension as needed. Here's an example:
 
 ```kotlin
@@ -69,7 +71,8 @@ xmlProcessor {
     ./gradlew processXmlSetFlatten
     ```
 
-4. The `build/output/sample.xsd` file will now contain a flattened version of your XML schema
+4. The `build/output/sample.xsd` file will now contain a flattened version of
+   your XML schema
 
       ```xml
      <?xml version="1.0" encoding="UTF-8"?>

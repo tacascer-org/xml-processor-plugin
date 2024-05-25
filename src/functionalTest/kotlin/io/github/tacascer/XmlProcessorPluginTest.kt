@@ -16,7 +16,10 @@ class XmlProcessorPluginTest : FunSpec({
         val buildFile = testDir.toPath().resolve("build.gradle.kts").createFile()
         val inputFile = testDir.toPath().resolve("sample.xsd").createFile()
         val testOutputFile = testDir.toPath().resolve("output/sample.xsd")
-        @Language("XML") val inputFileText = """
+
+        @Language("XML")
+        val inputFileText =
+            """
             <?xml version="1.0" encoding="UTF-8"?>
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
                 <xs:element name="sample" type="xs:string"/>
@@ -24,14 +27,17 @@ class XmlProcessorPluginTest : FunSpec({
             """.trimIndent()
         inputFile.writeText(inputFileText)
         @Language("XMl")
-        val expectedText = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
-            <xs:element name="sample" type="xs:string" />
-        </xs:schema>
-        """.trimIndent()
+        val expectedText =
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
+                <xs:element name="sample" type="xs:string" />
+            </xs:schema>
+            """.trimIndent()
+
         @Language("kotlin")
-        val buildFileText = """
+        val buildFileText =
+            """
             plugins {
                 id("io.github.tacascer.xml-processor")
             }
@@ -44,7 +50,7 @@ class XmlProcessorPluginTest : FunSpec({
                     }
                 }
             } 
-        """.trimIndent()
+            """.trimIndent()
         buildFile.writeText(buildFileText)
 
         val result =

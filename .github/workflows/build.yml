@@ -9,6 +9,11 @@ name: Build
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
+
+permissions: { }
 
 jobs:
   gradle:
@@ -17,5 +22,6 @@ jobs:
       java-version: 17
     secrets: inherit
     permissions:
-      security-events: write
       contents: write
+      security-events: write
+      statuses: write
