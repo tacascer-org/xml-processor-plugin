@@ -18,7 +18,10 @@ class XmlProcessTaskTest : FunSpec({
         val includingFile = testDir.resolve(INPUT_FILE).createFile()
         val includedFile = testDir.resolve("sample_1.xsd").createFile()
         val testOutputDir = tempdir().resolve("output").toPath()
-        @Language("XML") val includingFileText = """
+
+        @Language("XML")
+        val includingFileText =
+            """
             <?xml version="1.0" encoding="UTF-8"?>
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
                 <xs:include schemaLocation="${includedFile.toUri()}"/>
@@ -26,7 +29,9 @@ class XmlProcessTaskTest : FunSpec({
             </xs:schema>
             """.trimIndent()
         includingFile.writeText(includingFileText)
-        @Language("XML") val includedFileText = """
+        @Language("XML")
+        val includedFileText =
+            """
             <?xml version="1.0" encoding="UTF-8"?>
             <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
                 <xs:element name="sampleOne" type="xs:string"/>
@@ -34,22 +39,25 @@ class XmlProcessTaskTest : FunSpec({
             """.trimIndent()
         includedFile.writeText(includedFileText)
 
-        @Language("XML") val expectedText = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
-            <xs:element name="sample" type="xs:string" />
-            <xs:element name="sampleOne" type="xs:string" />
-        </xs:schema>
-        
-        """.trimIndent()
+        @Language("XML")
+        val expectedText =
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sample.com">
+                <xs:element name="sample" type="xs:string" />
+                <xs:element name="sampleOne" type="xs:string" />
+            </xs:schema>
+            
+            """.trimIndent()
         val project = ProjectBuilder.builder().build()
-        val xmlProcess = project.tasks.register("xmlProcess", XmlProcessTask::class.java) {
-            it.apply {
-                inputFiles.add(project.layout.projectDirectory.file(includingFile.toUri().toString()))
-                outputDir.set(project.layout.projectDirectory.dir(testOutputDir.toUri().toString()))
-                filters.add(IncludeFlattener())
+        val xmlProcess =
+            project.tasks.register("xmlProcess", XmlProcessTask::class.java) {
+                it.apply {
+                    inputFiles.add(project.layout.projectDirectory.file(includingFile.toUri().toString()))
+                    outputDir.set(project.layout.projectDirectory.dir(testOutputDir.toUri().toString()))
+                    filters.add(IncludeFlattener())
+                }
             }
-        }
 
         xmlProcess.get().process()
 

@@ -4,6 +4,8 @@ name: Dependabot auto-approve
 
 on: pull_request
 
+permissions: { }
+
 jobs:
   dependabot:
     uses: tacascer-org/actions-workflows/.github/workflows/approve_dependabot.yml@v0

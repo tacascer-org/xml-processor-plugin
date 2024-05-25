@@ -10,6 +10,8 @@ name: Build
 on:
   push:
 
+permissions: { }
+
 jobs:
   gradle:
     uses: tacascer-org/actions-workflows/.github/workflows/gradle_build.yml@v0
@@ -17,5 +19,6 @@ jobs:
       java-version: 17
     secrets: inherit
     permissions:
-      security-events: write
       contents: write
+      security-events: write
+      statuses: write
