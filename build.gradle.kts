@@ -23,7 +23,7 @@ val kotestVersion = "5.9.0"
 val jetbrainsAnnotationVersion = "24.1.0"
 val slf4jSimpleVersion = "2.0.13"
 val kotlinLoggingVersion = "6.0.9"
-val xmlProcessorVersion = "0.7.3"
+val xmlProcessorVersion = "0.7.4"
 
 dependencies {
     api("io.github.tacascer:xml-processor:$xmlProcessorVersion")
