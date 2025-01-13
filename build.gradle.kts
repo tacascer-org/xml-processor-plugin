@@ -6,7 +6,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.gradle.plugin-publish") version "1.3.0"
     id("org.jetbrains.dokka") version "2.0.0"
-    id("org.jetbrains.kotlinx.kover") version "0.9.0"
+    id("org.jetbrains.kotlinx.kover") version "0.9.1"
     id("org.sonarqube") version "6.0.1.5171"
     kotlin("jvm") version "2.1.0"
     signing
