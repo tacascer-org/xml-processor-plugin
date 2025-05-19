@@ -7,7 +7,7 @@ plugins {
     id("com.gradle.plugin-publish") version "1.3.1"
     id("org.jetbrains.dokka") version "2.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
-    id("org.sonarqube") version "6.1.0.5360"
+    id("org.sonarqube") version "6.2.0.5505"
     kotlin("jvm") version "2.1.20"
     signing
 }
